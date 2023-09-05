@@ -215,7 +215,7 @@ const delay = (ms) => {
 const submitComment = async (page, articleId) => {
     console.log(chalk.blue('开始评论文章:' + articleId))
     const index = getRandomNumber(0, COMMENTS.length)
-    const comment = (`这篇文章非常不错！！！ ${COMMENTS[index]}`)
+    const comment = (`${COMMENTS[index]}`)
     console.log(comment)
 
     // 导航到文章页面
@@ -235,6 +235,7 @@ const submitComment = async (page, articleId) => {
     await textarea.type(comment)
 
     // 找到评论提交按钮并点击
+    await page.waitForSelector('#commentform > div.comment-operate-box > div.comment-operate-r > div:nth-child(4) > a > input')
     await page.click('#commentform > div.comment-operate-box > div.comment-operate-r > div:nth-child(4) > a > input');
 
     await delay(getRandomNumber(1000, 3000))

@@ -2,10 +2,10 @@
   "name": "crawl-csdn",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "comment_articles.js",
   "type": "module",
   "scripts": {
-    "start": "node ./index.js"
+    "start": "node ./comment_articles.js"
   },
   "keywords": [],
   "author": "",
