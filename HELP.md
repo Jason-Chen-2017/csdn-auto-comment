@@ -1,5 +1,3 @@
-# csdn-auto-comment
-
 ## 使用教程
 
 ### 先安装 puppeteer
@@ -29,6 +27,7 @@ If used with TypeScript, the minimum supported TypeScript version is 4.7.4.
 ### 安装依赖
 
 执行：
+
 ```shell
 npm install
 ````
