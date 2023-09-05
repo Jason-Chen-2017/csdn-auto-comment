@@ -304,11 +304,17 @@ async function login() {
 
 async function main() {
     const page = await login();
-    for (let i = 0; i < ARTICLES.length; i++) {
-        let articleId = ARTICLES[i];
+
+    let N = ARTICLES.length - 1;
+    while (true) {
+        // 随机访问文章
+        let randomIndex = Math.floor(Math.random() * N);
+        let articleId = ARTICLES[randomIndex];
+
         await submitLike(page, articleId)
         await submitComment(page, articleId)
     }
+
 }
 
 main();
