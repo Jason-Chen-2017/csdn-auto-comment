@@ -213,61 +213,75 @@ const delay = (ms) => {
 
 
 const submitComment = async (page, articleId) => {
-    console.log(chalk.blue('开始评论文章:' + articleId))
-    const index = getRandomNumber(0, COMMENTS.length)
-    const comment = (`${COMMENTS[index]}`)
-    console.log(comment)
 
-    // 导航到文章页面
-    let url = 'https://dreamit.blog.csdn.net/article/details/' + articleId;
-    console.log(url)
+    try {
+        console.log(chalk.blue('开始评论文章:' + articleId))
+        const index = getRandomNumber(0, COMMENTS.length)
+        const comment = (`${COMMENTS[index]}`)
+        console.log(comment)
 
-    await page.goto(url);
-    // 等待评论按钮出现
-    // await page.waitForXPath('//*[@id="toolBarBox"]/div[2]/div[2]/ul/li[4]/a');
-    await page.waitForSelector('#toolBarBox > div.left-toolbox > div.toolbox-middle > ul > li.tool-item.tool-item-size.tool-active.tool-item-comment > a');
-    // 点击评论按钮
-    await page.click('.tool-item-href.go-side-comment');
-    // 找到评论输入框并输入评论内容
-    await page.waitForXPath('//*[@id="comment_content"]');
+        // 导航到文章页面
+        let url = 'https://dreamit.blog.csdn.net/article/details/' + articleId;
+        console.log(url)
 
-    let textarea = await page.$('#comment_content')
-    await textarea.type(comment)
+        await page.goto(url);
+        // 等待评论按钮出现
+        // await page.waitForXPath('//*[@id="toolBarBox"]/div[2]/div[2]/ul/li[4]/a');
+        await page.waitForSelector('#toolBarBox > div.left-toolbox > div.toolbox-middle > ul > li.tool-item.tool-item-size.tool-active.tool-item-comment > a');
+        // 点击评论按钮
+        await page.click('.tool-item-href.go-side-comment');
+        // 找到评论输入框并输入评论内容
+        await page.waitForXPath('//*[@id="comment_content"]');
 
-    // 找到评论提交按钮并点击
-    await page.waitForSelector('#commentform > div.comment-operate-box > div.comment-operate-r > div:nth-child(4) > a > input')
-    await page.click('#commentform > div.comment-operate-box > div.comment-operate-r > div:nth-child(4) > a > input');
+        let textarea = await page.$('#comment_content')
+        await textarea.type(comment)
 
-    await delay(getRandomNumber(1000, 3000))
+        // 找到评论提交按钮并点击
+        await page.waitForSelector('#commentform > div.comment-operate-box > div.comment-operate-r > div:nth-child(4) > a > input')
+        await page.click('#commentform > div.comment-operate-box > div.comment-operate-r > div:nth-child(4) > a > input');
+
+        await delay(getRandomNumber(1000, 3000))
+
+    } catch (error) {
+        console.log('submitComment error:', error);
+    }
 
 }
 
 const submitLike = async (page, articleId) => {
-    console.log(chalk.blue('开始点赞文章:' + articleId))
 
-    // 导航到文章页面
-    let url = 'https://dreamit.blog.csdn.net/article/details/' + articleId;
-    console.log(url)
+    try {
 
-    await page.goto(url);
-    await page.waitForTimeout(3000);
+        console.log(chalk.blue('开始点赞文章:' + articleId))
 
-    // 等待页面加载
-    await page.waitForSelector('#is-like')
-    await page.waitForSelector('#spanCount')
+        // 导航到文章页面
+        let url = 'https://dreamit.blog.csdn.net/article/details/' + articleId;
+        console.log(url)
 
-    // let countActive=page.document.getElementsByClassName("count active")
-    let countActive = await page.$$('.count.active')
-    console.dir(countActive)
-    let length = countActive.length
-    console.log(length)
+        await page.goto(url);
+        await delay(3000);
 
-    if (0 === length) {
-        // 找到点赞按钮并点击
-        await page.click('#is-like');
+        // 等待页面加载
+        await page.waitForSelector('#is-like')
+        await page.waitForSelector('#spanCount')
 
-        await delay(getRandomNumber(1000, 3000))
+        // let countActive=page.document.getElementsByClassName("count active")
+        let countActive = await page.$$('.count.active')
+        console.dir(countActive)
+        let length = countActive.length
+        console.log(length)
+
+        if (0 === length) {
+            // 找到点赞按钮并点击
+            await page.click('#is-like');
+
+            await delay(getRandomNumber(1000, 3000))
+        }
+
+    } catch (error) {
+        console.log('submitLike error:', error);
     }
+
 
 }
 
@@ -311,8 +325,10 @@ async function main() {
         let randomIndex = Math.floor(Math.random() * N);
         let articleId = ARTICLES[randomIndex];
 
+
         await submitLike(page, articleId)
         await submitComment(page, articleId)
+
     }
 
 }
